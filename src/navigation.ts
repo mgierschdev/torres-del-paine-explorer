@@ -73,6 +73,23 @@ export class Navigator {
 
   update(delta: number): void {
     if (this.mode === 'orbit') {
+      const boost = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') ? 3 : 1;
+      const amount = this.speed * .6 * boost * delta;
+      const forwardInput = Number(this.keys.has('KeyW') || this.keys.has('ArrowUp')) - Number(this.keys.has('KeyS') || this.keys.has('ArrowDown'));
+      const strafeInput = Number(this.keys.has('KeyD') || this.keys.has('ArrowRight')) - Number(this.keys.has('KeyA') || this.keys.has('ArrowLeft'));
+      if (forwardInput !== 0 || strafeInput !== 0) {
+        const forward = this.orbit.target.clone().sub(this.camera.position);
+        forward.y = 0;
+        forward.normalize();
+        const right = new THREE.Vector3().crossVectors(forward, THREE.Object3D.DEFAULT_UP).normalize();
+        const movement = forward.multiplyScalar(forwardInput * amount).add(right.multiplyScalar(strafeInput * amount));
+        this.camera.position.add(movement);
+        this.orbit.target.add(movement);
+        const halfW = SCENE.worldWidth / 2 - 4;
+        const halfD = SCENE.worldDepth / 2 - 4;
+        this.orbit.target.x = THREE.MathUtils.clamp(this.orbit.target.x, -halfW, halfW);
+        this.orbit.target.z = THREE.MathUtils.clamp(this.orbit.target.z, -halfD, halfD);
+      }
       this.orbit.update();
     } else if (this.pointer.isLocked) {
       const boost = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') ? 3 : 1;

@@ -2,6 +2,8 @@
 
 An interactive Three.js flight across Lago Pehoé toward Paine Grande and the Cuernos del Paine. The scene combines real-world elevation and lake geometry with procedural terrain materials, water, cloud cover, snow, vegetation, and cinematic lighting.
 
+![Torres del Paine interactive landscape](docs/torres-del-paine-explorer.png)
+
 ## Features
 
 - Real 30 m Copernicus GLO-30 elevation, bundled for offline runtime use
@@ -31,6 +33,7 @@ Open [http://127.0.0.1:4173](http://127.0.0.1:4173).
 
 | Mode | Input | Action |
 | --- | --- | --- |
+| Orbit | `WASD` or arrow keys | Move across the landscape |
 | Orbit | Drag | Rotate around the landscape |
 | Orbit | Scroll | Change camera distance |
 | Fly | Click the landscape | Capture the pointer |

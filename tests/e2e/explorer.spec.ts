@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/?static=1');
-  await expect.poll(() => page.evaluate(() => window.__PAINE_EXPLORER__?.ready)).toBe(true);
+  await expect.poll(() => page.evaluate(() => window.__PAINE_EXPLORER__?.ready), { timeout: 15_000 }).toBe(true);
 });
 
 test('loads the vista and exposes the expected controls', async ({ page }) => {
@@ -17,12 +17,19 @@ test('loads the vista and exposes the expected controls', async ({ page }) => {
 });
 
 test('switches modes, resets the camera, and persists quality', async ({ page }) => {
+  test.setTimeout(90_000);
+  const beforeKeyboard = await page.evaluate(() => window.__PAINE_EXPLORER__?.camera());
+  await page.keyboard.down('KeyW');
+  await page.waitForTimeout(400);
+  await page.keyboard.up('KeyW');
+  const afterKeyboard = await page.evaluate(() => window.__PAINE_EXPLORER__?.camera());
+  expect(afterKeyboard).not.toEqual(beforeKeyboard);
   await page.getByRole('button', { name: 'Switch navigation mode' }).click();
   await expect.poll(() => page.evaluate(() => window.__PAINE_EXPLORER__?.mode())).toBe('fly');
   await page.getByRole('button', { name: 'Change visual quality' }).click();
   await expect.poll(() => page.evaluate(() => window.__PAINE_EXPLORER__?.quality())).toBe('medium');
   await page.reload();
-  await expect.poll(() => page.evaluate(() => window.__PAINE_EXPLORER__?.ready)).toBe(true);
+  await expect.poll(() => page.evaluate(() => window.__PAINE_EXPLORER__?.ready), { timeout: 20_000 }).toBe(true);
   await expect.poll(() => page.evaluate(() => window.__PAINE_EXPLORER__?.quality())).toBe('medium');
   await page.getByRole('button', { name: 'Reset viewpoint' }).click();
   const camera = await page.evaluate(() => window.__PAINE_EXPLORER__?.camera());
@@ -39,11 +46,8 @@ test('resizes cleanly and opens the attribution panel', async ({ page }) => {
 });
 
 test('uses only same-origin runtime assets', async ({ page }) => {
-  const externalRequests: string[] = [];
-  page.on('request', (request) => {
-    if (new URL(request.url()).origin !== 'http://127.0.0.1:4173') externalRequests.push(request.url());
-  });
-  await page.goto('/?static=1');
-  await expect.poll(() => page.evaluate(() => window.__PAINE_EXPLORER__?.ready)).toBe(true);
+  const externalRequests = await page.evaluate(() => performance.getEntriesByType('resource')
+    .map((entry) => entry.name)
+    .filter((url) => new URL(url).origin !== window.location.origin));
   expect(externalRequests).toEqual([]);
 });

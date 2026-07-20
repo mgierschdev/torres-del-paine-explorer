@@ -240,6 +240,7 @@ function resize(): void {
 function animate(now: number): void {
   requestAnimationFrame(animate);
   if (!pageVisible || !navigator) return;
+  if (staticFrame && now - lastTime < 100) return;
   const delta = Math.min((now - lastTime) / 1000, .05);
   lastTime = now;
   navigator.update(delta);
