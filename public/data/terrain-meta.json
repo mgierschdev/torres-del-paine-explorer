@@ -1,0 +1,14 @@
+{
+  "width": 513,
+  "height": 513,
+  "minElevation": 22,
+  "maxElevation": 2641,
+  "bounds": {
+    "west": -73.28,
+    "south": -51.2,
+    "east": -72.82,
+    "north": -50.88
+  },
+  "source": "Copernicus DEM GLO-30 (2021 release)",
+  "byteOrder": "little-endian uint16"
+}

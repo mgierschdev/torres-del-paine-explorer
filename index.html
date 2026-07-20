@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101a24" />
+    <meta name="description" content="An interactive Three.js flight over Torres del Paine." />
+    <title>Torres del Paine — Aerial Explorer</title>
+  </head>
+  <body>
+    <main id="app">
+      <div id="scene" aria-label="Interactive three-dimensional landscape"></div>
+      <div id="loading" role="status">
+        <div class="loader-line"><span></span></div>
+        <p>Forming the Patagonian landscape</p>
+      </div>
+      <header class="masthead">
+        <div class="place">
+          <span class="eyebrow">51°03′S · 73°03′W</span>
+          <h1>Torres del Paine</h1>
+          <span class="subhead">Patagonia, Chile</span>
+        </div>
+        <button id="about" class="text-button" type="button" aria-expanded="false">About</button>
+      </header>
+      <section id="controls" class="controls" aria-label="Scene controls">
+        <button id="mode" type="button" aria-label="Switch navigation mode"><span class="icon">✦</span><span>Orbit</span></button>
+        <button id="reset" type="button" aria-label="Reset viewpoint"><span class="icon">↺</span><span>Reset</span></button>
+        <button id="quality" type="button" aria-label="Change visual quality"><span class="icon">◐</span><span>High</span></button>
+        <button id="sound" type="button" aria-label="Ambient sound unavailable" aria-pressed="false"><span class="icon">⌁</span><span>Sound off</span></button>
+        <button id="fullscreen" type="button" aria-label="Enter fullscreen"><span class="icon">⛶</span><span>Full</span></button>
+      </section>
+      <aside id="hint" class="hint">
+        <div><span class="mouse"></span><p><strong>Drag</strong> to look around<br/><strong>Scroll</strong> to move closer</p></div>
+        <button id="dismiss-hint" type="button" aria-label="Dismiss controls hint">×</button>
+      </aside>
+      <aside id="about-panel" class="about-panel" aria-hidden="true">
+        <button id="close-about" type="button" aria-label="Close about panel">×</button>
+        <span class="eyebrow">The landscape</span>
+        <h2>Between water and stone</h2>
+        <p>This interactive study follows the real topography surrounding Lago Pehoé, Paine Grande, and the Cuernos del Paine. Its weather and surface detail are art-directed after the dramatic light of southern Patagonia.</p>
+        <p class="credit">Elevation: Copernicus DEM GLO-30 © DLR e.V. and Airbus Defence and Space GmbH, provided under Copernicus by the European Union and ESA. Water geography © OpenStreetMap contributors.</p>
+      </aside>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <footer><span>REAL-WORLD ELEVATION</span><span id="status">ORBIT MODE</span></footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
